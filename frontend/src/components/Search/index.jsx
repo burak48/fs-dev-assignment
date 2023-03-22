@@ -1,14 +1,22 @@
 import React from 'react';
 
-function Search(props) {
+function Search({ searchTerm, setSearchTerm }) {
+    const handleInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
     return (
-        <form onSubmit={props.onSearch} className="flex items-center justify-center mt-8">
+        <form onSubmit={handleSubmit} className="flex items-center justify-center mt-8">
             <div className="flex flex-row items-center w-full max-w-xs">
                 <input
                     type="text"
                     placeholder="Enter search query"
-                    value={props.query}
-                    onChange={props.onInputChange}
+                    value={searchTerm}
+                    onChange={handleInputChange}
                     className="w-full px-3 py-2 text-gray-700 rounded-lg focus:outline-none focus:bg-white focus:shadow-outline" />
                 <button
                     type="submit"

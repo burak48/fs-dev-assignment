@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import BookList from './components/BookList';
+import Search from './components/Search';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -22,24 +24,8 @@ function App() {
   return (
     <div className="App">
       <h1>Search for Books</h1>
-      <form onSubmit={handleSearch}>
-        <input type="text" placeholder="Enter search query" value={query} onChange={handleInputChange} />
-        <button type="submit">Search</button>
-      </form>
-      <div className="book-list">
-        {books.map((book, index) => (
-          book.title.toLowerCase().includes(query.toLowerCase()) ||
-            book.author.toLowerCase().includes(query.toLowerCase()) ||
-            book.publicationYear.toString().includes(query) ? (
-            <div key={index} className="book">
-              <h2>{book.title}</h2>
-              <p>Author: {book.author}</p>
-              <p>Publication Year: {book.publicationYear}</p>
-              <p>Description: {book.description}</p>
-            </div>
-          ) : null
-        ))}
-      </div>
+      <Search query={query} onInputChange={handleInputChange} onSearch={handleSearch} />
+      <BookList books={books} query={query} />
     </div>
   );
 }

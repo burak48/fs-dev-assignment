@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-function BookList({books, searchTerm}) {
+function BookList({ books, searchTerm }) {
+    const [visibleBooks, setVisibleBooks] = useState(10);
 
-    const filteredBooks = books.filter((book) =>
-        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.publicationYear.toString().includes(searchTerm)
-    );
+    const showMoreBooks = () => {
+        setVisibleBooks((prevValue) => prevValue + 10);
+    };
+
+    const filteredBooks = books.filter((book) => {
+        if (
+            searchTerm === "" ||
+            book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            book.publicationYear === searchTerm
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
 
     return (
         <div className="book-list">
-            {filteredBooks.map((book, index) => (
+            {filteredBooks.slice(0, visibleBooks).map((book, index) => (
                 <div key={index} className="book bg-white rounded-lg p-4 shadow-md mb-4">
                     <h2 className="text-xl font-semibold mb-2">{book.title}</h2>
                     <p className="text-gray-500 mb-2">Author: {book.author}</p>
@@ -23,15 +35,14 @@ function BookList({books, searchTerm}) {
                     {searchTerm && `No results found for "${searchTerm}"`}
                 </div>
             )}
-            {!searchTerm &&
-                books.map((b, i) => (
-                    <div key={i} className="book bg-white rounded-lg p-4 shadow-md mb-4">
-                        <h2 className="text-xl font-semibold mb-2">{b.title}</h2>
-                        <p className="text-gray-500 mb-2">Author: {b.author}</p>
-                        <p className="text-gray-500 mb-2">Publication Year: {b.publicationYear}</p>
-                        <p className="text-gray-700">{b.description}</p>
-                    </div>
-                ))}
+            {filteredBooks.length > visibleBooks && (
+                <button
+                    className="bg-gray-900 text-white px-4 py-2 rounded-lg"
+                    onClick={showMoreBooks}
+                >
+                    Load More
+                </button>
+            )}
         </div>
     );
 }

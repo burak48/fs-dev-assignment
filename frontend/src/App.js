@@ -22,10 +22,16 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Search for Books</h1>
-      <Search query={query} onInputChange={handleInputChange} onSearch={handleSearch} />
-      <BookList books={books} query={query} />
+    <div className="flex flex-col items-center min-h-screen py-8 bg-gray-200">
+      <div className="w-full max-w-3xl">
+        <h1 className="text-4xl font-bold text-center text-gray-800">Search for Books</h1>
+        <div className="mt-6">
+          <Search query={query} onInputChange={handleInputChange} onSearch={handleSearch} />
+        </div>
+        <div className="mt-6">
+          <BookList books={books} query={query} />
+        </div>
+      </div>
     </div>
   );
 }
